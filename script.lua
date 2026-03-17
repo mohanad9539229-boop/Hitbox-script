@@ -1,5 +1,5 @@
 -- [[ المطور الرسمي: سلاكس | قناة: Ezz.i1 ]]
--- [[ الإصدار: Ultra Modern V5 - Super Anti-Cuff ]]
+-- [[ الإصدار: V7 - Anti-Cuff Toggle Fix ]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -13,18 +13,16 @@ _G.AntiCuff = false
 
 -- إنشاء الواجهة
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Slax_Ultimate_Hub_V5"
+ScreenGui.Name = "Slax_Final_Fix"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 
--- التنسيق العصري
 local Theme = {
     Main = Color3.fromRGB(15, 15, 22),
-    Accent = Color3.fromRGB(140, 80, 250), -- بنفسجي
+    Accent = Color3.fromRGB(140, 80, 250),
     Red = Color3.fromRGB(200, 50, 50),
     Green = Color3.fromRGB(50, 200, 100),
-    Text = Color3.fromRGB(255, 255, 255),
-    SubText = Color3.fromRGB(180, 180, 180)
+    Text = Color3.fromRGB(255, 255, 255)
 }
 
 -- [[ الإطار الرئيسي ]]
@@ -34,11 +32,9 @@ MainFrame.Position = UDim2.new(0.5, -120, 0.5, -130)
 MainFrame.BackgroundColor3 = Theme.Main
 MainFrame.Draggable = true
 MainFrame.Active = true
-MainFrame.Visible = true
 MainFrame.Parent = ScreenGui
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 15)
 
--- عنوان المطور (سلاكس)
 local DevTitle = Instance.new("TextLabel")
 DevTitle.Size = UDim2.new(1, 0, 0, 45)
 DevTitle.Text = "المطور: سلاكس"
@@ -48,9 +44,7 @@ DevTitle.TextSize = 22
 DevTitle.BackgroundTransparency = 1
 DevTitle.Parent = MainFrame
 
--- [[ الأزرار ]]
-
--- 1. مدخل حجم الـ Hitbox
+-- 1. مدخل الحجم
 local SizeBox = Instance.new("TextBox")
 SizeBox.Size = UDim2.new(1, -30, 0, 35)
 SizeBox.Position = UDim2.new(0, 15, 0, 55)
@@ -61,7 +55,7 @@ SizeBox.Font = Enum.Font.GothamBold
 SizeBox.Parent = MainFrame
 Instance.new("UICorner", SizeBox).CornerRadius = UDim.new(0, 8)
 
--- 2. زر تفعيل الـ Hitbox
+-- 2. زر الـ Hitbox
 local HitboxToggle = Instance.new("TextButton")
 HitboxToggle.Size = UDim2.new(1, -30, 0, 40)
 HitboxToggle.Position = UDim2.new(0, 15, 0, 100)
@@ -72,7 +66,7 @@ HitboxToggle.Font = Enum.Font.GothamBold
 HitboxToggle.Parent = MainFrame
 Instance.new("UICorner", HitboxToggle).CornerRadius = UDim.new(0, 10)
 
--- 3. زر مضاد الكلبشة المتطور
+-- 3. زر مضاد الكلبشة (تم إصلاح الإيقاف)
 local AntiCuffBtn = Instance.new("TextButton")
 AntiCuffBtn.Size = UDim2.new(1, -30, 0, 40)
 AntiCuffBtn.Position = UDim2.new(0, 15, 0, 150)
@@ -83,96 +77,79 @@ AntiCuffBtn.Font = Enum.Font.GothamBold
 AntiCuffBtn.Parent = MainFrame
 Instance.new("UICorner", AntiCuffBtn).CornerRadius = UDim.new(0, 10)
 
--- حقوق القناة
-local ChannelLabel = Instance.new("TextLabel")
-ChannelLabel.Size = UDim2.new(1, 0, 0, 20)
-ChannelLabel.Position = UDim2.new(0, 0, 1, -25)
-ChannelLabel.Text = "قناة: Ezz.i1 | Slax V5"
-ChannelLabel.TextColor3 = Theme.SubText
-ChannelLabel.Font = Enum.Font.Gotham
-ChannelLabel.TextSize = 10
-ChannelLabel.BackgroundTransparency = 1
-ChannelLabel.Parent = MainFrame
-
--- [[ زر المطور العائم (بصورتك) ]]
+-- [[ زر المطور العائم ]]
 local SlaxBtn = Instance.new("TextButton")
 SlaxBtn.Size = UDim2.new(0, 60, 0, 60)
 SlaxBtn.Position = UDim2.new(0.05, 0, 0.4, 0)
 SlaxBtn.BackgroundColor3 = Theme.Main
 SlaxBtn.Text = ""
 SlaxBtn.Draggable = true
-SlaxBtn.Active = true
 SlaxBtn.Parent = ScreenGui
 Instance.new("UICorner", SlaxBtn).CornerRadius = UDim.new(1, 0)
 
 local SlaxImg = Instance.new("ImageLabel")
 SlaxImg.Size = UDim2.new(1, 0, 1, 0)
-SlaxImg.Image = "rbxassetid://124253717157226" -- صورتك يا سلاكس
+SlaxImg.Image = "rbxassetid://124253717157226"
 SlaxImg.BackgroundTransparency = 1
 SlaxImg.Parent = SlaxBtn
 Instance.new("UICorner", SlaxImg).CornerRadius = UDim.new(1, 0)
 
--- [[ الوظائف البرمجية المتطورة ]]
+-- [[ وظائف الإصلاح ]]
 
--- وظيفة فك الكلبشة والالتصاق (Super Unbind)
-local function SuperUnbind()
+-- وظيفة تنظيف الكلبشة عند الإيقاف
+local function StopAntiCuff()
+    _G.AntiCuff = false
     local char = LocalPlayer.Character
     if char then
-        -- فك تجميد اللاعب
         local hum = char:FindFirstChildOfClass("Humanoid")
         if hum then
-            if hum.PlatformStand == true then hum.PlatformStand = false end
-            if hum.WalkSpeed < 10 then hum.WalkSpeed = 16 end
-        end
-
-        -- كسر الـ Weld والالتصاق بأي شخص يضغط عليك
-        for _, part in ipairs(char:GetChildren()) do
-            if part:IsA("BasePart") then
-                for _, obj in ipairs(part:GetChildren()) do
-                    if obj:IsA("Weld") or obj:IsA("ManualWeld") or obj:IsA("Snap") or obj:IsA("RopeConstraint") then
-                        -- إذا كان الربط مع شخص خارج الـ Character بتاعك، احذفه
-                        if (obj.Part0 and not obj.Part0:IsDescendantOf(char)) or (obj.Part1 and not obj.Part1:IsDescendantOf(char)) then
-                            obj:Destroy()
-                        end
-                    end
-                end
-            end
-        end
-
-        -- حذف قيم الكلبشة البرمجية
-        for _, obj in ipairs(char:GetDescendants()) do
-            if obj:IsA("ObjectValue") and (obj.Name == "Cuffed" or obj.Name == "Creator") then
-                obj:Destroy()
-            end
+            hum.PlatformStand = false
+            hum.WalkSpeed = 16 -- إعادة السرعة للطبيعي
         end
     end
 end
 
--- تفعيل الـ Hitbox
+AntiCuffBtn.MouseButton1Click:Connect(function()
+    if _G.AntiCuff == false then
+        _G.AntiCuff = true
+        AntiCuffBtn.Text = "مضاد الكلبشة: يعمل"
+        TweenService:Create(AntiCuffBtn, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Green}):Play()
+    else
+        StopAntiCuff() -- استدعاء وظيفة الإيقاف والتنظيف
+        AntiCuffBtn.Text = "مضاد الكلبشة: إيقاف"
+        TweenService:Create(AntiCuffBtn, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Red}):Play()
+    end
+end)
+
 HitboxToggle.MouseButton1Click:Connect(function()
     _G.HitboxEnabled = not _G.HitboxEnabled
-    HitboxToggle.Text = _G.HitboxEnabled and "إيقاف الـ Hitbox" or "تفعيل الـ Hitbox"
-    TweenService:Create(HitboxToggle, TweenInfo.new(0.3), {BackgroundColor3 = _G.HitboxEnabled and Theme.Red or Theme.Accent}):Play()
-end)
-
--- تفعيل مضاد الكلبشة
-AntiCuffBtn.MouseButton1Click:Connect(function()
-    _G.AntiCuff = not _G.AntiCuff
-    AntiCuffBtn.Text = _G.AntiCuff and "مضاد الكلبشة: يعمل" or "مضاد الكلبشة: إيقاف"
-    TweenService:Create(AntiCuffBtn, TweenInfo.new(0.3), {BackgroundColor3 = _G.AntiCuff and Theme.Green or Theme.Red}):Play()
-end)
-
-SizeBox.FocusLost:Connect(function()
-    _G.HeadSize = tonumber(SizeBox.Text) or 10
+    if not _G.HitboxEnabled then
+        -- إعادة الضبط عند الإيقاف
+        for _, v in ipairs(Players:GetPlayers()) do
+            if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                v.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+                v.Character.HumanoidRootPart.Transparency = 1
+            end
+        end
+        HitboxToggle.Text = "تفعيل الـ Hitbox"
+        TweenService:Create(HitboxToggle, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Accent}):Play()
+    else
+        HitboxToggle.Text = "إيقاف الـ Hitbox"
+        TweenService:Create(HitboxToggle, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Red}):Play()
+    end
 end)
 
 SlaxBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
 end)
 
--- اللوب الأساسي (RenderStepped للأداء السريع)
+SizeBox.FocusLost:Connect(function()
+    _G.HeadSize = tonumber(SizeBox.Text) or 10
+end)
+
+-- اللوب الأساسي
 RunService.RenderStepped:Connect(function()
-    -- تشغيل الـ Hitbox
+    -- Hitbox Loop
     if _G.HitboxEnabled then
         for _, v in ipairs(Players:GetPlayers()) do
             if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
@@ -185,10 +162,24 @@ RunService.RenderStepped:Connect(function()
         end
     end
     
-    -- تشغيل مضاد الكلبشة (Super)
+    -- Anti-Cuff Loop (يعمل فقط إذا كانت القيمة True)
     if _G.AntiCuff then
-        SuperUnbind()
+        local char = LocalPlayer.Character
+        if char then
+            local hum = char:FindFirstChildOfClass("Humanoid")
+            if hum and (hum.PlatformStand or hum.WalkSpeed < 10) then
+                hum.PlatformStand = false
+                hum.WalkSpeed = 16
+            end
+            for _, obj in ipairs(char:GetDescendants()) do
+                if obj:IsA("Weld") or obj:IsA("RopeConstraint") or (obj:IsA("ObjectValue") and obj.Name == "Cuffed") then
+                    if obj.Parent.Name == "HumanoidRootPart" or obj.Parent.Name == "Torso" or obj.Name == "Cuffed" then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
     end
 end)
 
-warn("Slax Hub V5: Loaded Successfully! Developed by Slax.")
+warn("Slax V7: Anti-Cuff Toggle Fixed!")
