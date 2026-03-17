@@ -1,5 +1,5 @@
 -- [[ المطور الرسمي: سلاكس | قناة: Ezz.i1 ]]
--- [[ الإصدار: Ultra Modern V2 ]]
+-- [[ الإصدار: Ultra Modern V3 - Custom Image ]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -12,7 +12,7 @@ _G.Disabled = true
 
 -- إنشاء الواجهة
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Slax_Dev_Hub"
+ScreenGui.Name = "Slax_Developer_Hub"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 
@@ -24,11 +24,13 @@ local Theme = {
     SubText = Color3.fromRGB(160, 160, 170)
 }
 
--- الإطار الرئيسي
+-- [[ الإطار الرئيسي ]]
 local MainFrame = Instance.new("Frame")
 MainFrame.Size = UDim2.new(0, 230, 0, 190)
 MainFrame.Position = UDim2.new(0.5, -115, 0.5, -95)
 MainFrame.BackgroundColor3 = Theme.Main
+MainFrame.BackgroundTransparency = 0.1
+MainFrame.Visible = true
 MainFrame.Draggable = true
 MainFrame.Active = true
 MainFrame.Parent = ScreenGui
@@ -67,13 +69,10 @@ SizeBox.Size = UDim2.new(1, -30, 0, 40)
 SizeBox.Position = UDim2.new(0, 15, 0, 70)
 SizeBox.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 SizeBox.Text = "10"
-SizeBox.PlaceholderText = "أدخل الحجم..."
 SizeBox.TextColor3 = Theme.Text
 SizeBox.Font = Enum.Font.GothamBold
 SizeBox.Parent = MainFrame
-
-local BoxCorner = Instance.new("UICorner", SizeBox)
-BoxCorner.CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", SizeBox).CornerRadius = UDim.new(0, 10)
 
 -- زر التفعيل
 local Toggle = Instance.new("TextButton")
@@ -85,31 +84,34 @@ Toggle.TextColor3 = Theme.Text
 Toggle.Font = Enum.Font.GothamBold
 Toggle.TextSize = 16
 Toggle.Parent = MainFrame
+Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 12)
 
-local ToggleCorner = Instance.new("UICorner", Toggle)
-ToggleCorner.CornerRadius = UDim.new(0, 12)
+-- [[ زر المطور العائم (بصورتك الخاصة) ]]
+local SlaxBtn = Instance.new("TextButton")
+SlaxBtn.Size = UDim2.new(0, 60, 0, 60)
+SlaxBtn.Position = UDim2.new(0.05, 0, 0.4, 0) -- مكان جانبي مريح
+SlaxBtn.BackgroundColor3 = Theme.Main
+SlaxBtn.Text = ""
+SlaxBtn.Draggable = true -- تقدر تحركه في أي مكان
+SlaxBtn.Active = true
+SlaxBtn.Parent = ScreenGui
 
--- زر السيف (لإخفاء الواجهة)
-local SwordBtn = Instance.new("TextButton")
-SwordBtn.Size = UDim2.new(0, 55, 0, 55)
-SwordBtn.Position = UDim2.new(0.1, 0, 0.8, 0)
-SwordBtn.BackgroundColor3 = Theme.Main
-SwordBtn.Text = ""
-SwordBtn.Draggable = true
-SwordBtn.Parent = ScreenGui
+local BtnCorner = Instance.new("UICorner", SlaxBtn)
+BtnCorner.CornerRadius = UDim.new(1, 0) -- دائري تماماً
 
-local SwordCorner = Instance.new("UICorner", SwordBtn)
-SwordCorner.CornerRadius = UDim.new(0, 50)
+-- إضافة صورتك الشخصية للزر
+local SlaxImg = Instance.new("ImageLabel")
+SlaxImg.Size = UDim2.new(1, 0, 1, 0)
+SlaxImg.Position = UDim2.new(0, 0, 0, 0)
+SlaxImg.BackgroundTransparency = 1
+SlaxImg.Image = "rbxassetid://124253717157226" -- الآيدي الخاص بك
+SlaxImg.Parent = SlaxBtn
 
-local SwordImg = Instance.new("ImageLabel")
-SwordImg.Size = UDim2.new(0, 35, 0, 35)
-SwordImg.Position = UDim2.new(0.5, -17, 0.5, -17)
-SwordImg.Image = "rbxassetid://1061914210"
-SwordImg.ImageColor3 = Theme.Accent
-SwordImg.BackgroundTransparency = 1
-SwordImg.Parent = SwordBtn
+local ImgCorner = Instance.new("UICorner", SlaxImg)
+ImgCorner.CornerRadius = UDim.new(1, 0)
 
--- الوظائف البرمجية
+-- [[ وظائف التشغيل ]]
+
 SizeBox.FocusLost:Connect(function()
     _G.HeadSize = tonumber(SizeBox.Text) or 10
 end)
@@ -122,7 +124,7 @@ Toggle.MouseButton1Click:Connect(function()
     }):Play()
 end)
 
-SwordBtn.MouseButton1Click:Connect(function()
+SlaxBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
 end)
 
@@ -143,6 +145,6 @@ end)
 
 -- رسالة الترحيب في الـ Output
 print("--------------------------------------")
-warn("تم تحميل سكربت المطور: سلاكس")
-print("حقوق القناة: Ezz.i1")
+warn("Slax Modern Hub Loaded!")
+print("المطور: سلاكس")
 print("--------------------------------------")
